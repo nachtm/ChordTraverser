@@ -11,11 +11,11 @@ public class Graph{
 		}
 	}
 
-	public boolean isAdjacent(int x, int y){
+	public boolean isAdjacent(int x, int y) throws IndexOutOfBoundsException{
 		return adjMatrix.get(x).get(y);
 	}
 
-	public List<Integer> getNeighbors(int x){
+	public List<Integer> getNeighbors(int x) throws IndexOutOfBoundsException{
 		List<Integer> toReturn = new ArrayList<Integer>();
 
 		for(int i = 0; i < adjMatrix.size(); i++){
@@ -45,10 +45,18 @@ public class Graph{
 
 	//I don't think we'll need a removeVertex function but if we do it will go here
 
-	public void addEdge(int a, int b){
+	public void addEdge(int a, int b) throws IndexOutOfBoundsException{
 		adjMatrix.get(a).set(b, true);
 	}
 
+	public void removeEdge(int a, int b) throws IndexOutOfBoundsException{
+		adjMatrix.get(a).set(b, false);
+	}
+
+	public int getSize(){
+		return size;
+	}
+	
 	public String toString(){
 		String s = "";
 		s += "Graph size: " + size + "\n";
