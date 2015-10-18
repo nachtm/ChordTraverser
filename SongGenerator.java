@@ -69,6 +69,7 @@ public class SongGenerator{
 		for(int i = 0; i < numChords; i++){
 			String line = s.nextLine();
 			Scanner lineReader = new Scanner(line);
+			lineReader.next(); //skip the number
 			chordNames.add(lineReader.next());
 			while(lineReader.hasNextInt()){
 				g.addEdge(i, lineReader.nextInt());
