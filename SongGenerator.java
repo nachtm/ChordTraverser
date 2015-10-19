@@ -6,6 +6,7 @@ public class SongGenerator{
 	private List<Chord> chords; //eventually chords will probably be their own objects
 	private Random rand = new Random();
 	private Map<String,List<Integer>> chordDictionary;
+	private static final int MINIMUM_LENGTH = 15;
 
 	public SongGenerator(Graph g, List<String> names, Map<String, List<Integer>> dict){
 		chordGraph = g;
@@ -35,7 +36,7 @@ public class SongGenerator{
 		List<Chord> song = new ArrayList<Chord>();
 		song.add(chords.get(0));
 		int currChord = rand.nextInt(chords.size());
-		while(currChord != 0){
+		while(currChord != 0 || song.size() < MINIMUM_LENGTH){
 			song.add(chords.get(currChord));
 			List<Integer> neighbors = chordGraph.getNeighbors(currChord);
 			int nextIndex = rand.nextInt(neighbors.size());
