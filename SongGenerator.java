@@ -1,13 +1,28 @@
+/**
+ * Main class in the ChordTraverser program. This reads in two text files to 
+ * generate a graph of chords that sound good in sequence. From there it plays the
+ * root chord then jumps to a random neighbor, continuing to traverse the graph 
+ * until the minimum length is reached AND it arrives at the root again. Once it's 
+ * generated the song, it plays it using MIDI and the computer's default speakers.
+ * By Micah Nacht 
+ * November 2015 
+ */
 import java.io.*;
 import java.util.*;
 
 public class SongGenerator{
 	private Graph chordGraph;
-	private List<Chord> chords; //eventually chords will probably be their own objects
+	private List<Chord> chords; 
 	private Random rand = new Random();
 	private Map<String,List<Integer>> chordDictionary;
-	private static final int MINIMUM_LENGTH = 15;
+	private static final int MINIMUM_LENGTH = 15; //Minimum number of chords in a song
 
+	/**
+	 * Constructor for a SongGenerator. Takes in a graph which represents connections 
+	 * between chords "g", a list of chord names "names" (each node in g is an 
+	 * integer, and the name at the corresponding index of "names" is the name of 
+	 * the chord), and a Map that maps chord names to the corresponding MIDI notes.
+	 */
 	public SongGenerator(Graph g, List<String> names, Map<String, List<Integer>> dict){
 		chordGraph = g;
 		this.chordDictionary = dict;
@@ -18,20 +33,10 @@ public class SongGenerator{
 		}
 	}
 
-	// public String generateSong(){
-	// 	String song = chords.get(0);
-	// 	int currChord = rand.nextInt(chords.size());
-	// 	while(currChord != 0){
-	// 		song += " " + chords.get(currChord);
-	// 		List<Integer> neighbors = chordGraph.getNeighbors(currChord);
-	// 		int nextIndex = rand.nextInt(neighbors.size());
-	// 		currChord = neighbors.get(nextIndex);
-	// 	}
-	// 	assert currChord == 0;
-	// 	song += " " + chords.get(0);
-	// 	return song;
-	// }
-
+	/**
+	 * Generates a song by randomly walking through the chordGraph passed to this
+	 * SongGenerator by the constructor. 
+	 */
 	public List<Chord> generateSong(){
 		List<Chord> song = new ArrayList<Chord>();
 		song.add(chords.get(0));
@@ -47,7 +52,12 @@ public class SongGenerator{
 		return song;
 	}
 
-	//generate graph from a text file
+	/**
+	 * Reads the two text files and turns them into a graph, a list of chord names, 
+	 * and a map between chord names and notes to be used by the SongGenerator. 
+	 * Then, tries to play the song through the computer's speakers by creating a 
+	 * SongPlayer object and 
+	 */
 	public static void main(String[] args){
 		if(args.length != 2){
 			System.exit(0);
@@ -111,12 +121,5 @@ public class SongGenerator{
 		} catch(Exception e){
 			System.err.println(e);
 		}
-		// for(String chord : chordNames){
-		// 	System.out.print(chord + " ");
-		// }
-		// System.out.println();
-		// System.out.println(g);
-
-
 	}
 }
