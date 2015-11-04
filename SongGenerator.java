@@ -36,9 +36,12 @@ public class SongGenerator{
 	/**
 	 * Generates a song by randomly walking through the chordGraph passed to this
 	 * SongGenerator by the constructor. 
+	 * TODO: Check algorithm to see if explicitly adding the root at the beginning 
+	 * is necessary. Can I just declare currChord to be 0 and start?
 	 */
 	public List<Chord> generateSong(){
 		List<Chord> song = new ArrayList<Chord>();
+		//Start with the root chord.
 		song.add(chords.get(0));
 		int currChord = rand.nextInt(chords.size());
 		while(currChord != 0 || song.size() < MINIMUM_LENGTH){
@@ -56,12 +59,13 @@ public class SongGenerator{
 	 * Reads the two text files and turns them into a graph, a list of chord names, 
 	 * and a map between chord names and notes to be used by the SongGenerator. 
 	 * Then, tries to play the song through the computer's speakers by creating a 
-	 * SongPlayer object and 
+	 * SongPlayer object and passing it the song to play.
 	 */
 	public static void main(String[] args){
 		if(args.length != 2){
 			System.exit(0);
 		}
+		//Set up the scanner
 		File f = new File(args[0]);
 		Scanner s = null; //will never be null past the try/catch block below
 		try{
@@ -72,6 +76,7 @@ public class SongGenerator{
 		}
 		assert s != null; 
 		
+		//Read the chordGraph file
 		int numChords = s.nextInt();
 		s.nextLine(); //have to eat the newline char
 
@@ -87,7 +92,7 @@ public class SongGenerator{
 			}
 		}
 
-		//generate chord dictionary from a text file
+		//Read chord dictionary file
 		Map<String, List<Integer>> dict = new HashMap<String, List<Integer>>();
 
 		f = new File(args[1]);
@@ -112,9 +117,12 @@ public class SongGenerator{
 		}
 		System.out.println(dict.size());
 
+		//Generate song
 		SongGenerator sg = new SongGenerator(g, chordNames, dict);
 		List<Chord> song = sg.generateSong();
 		System.out.println(song);
+		
+		//Play song
 		try{
 			SongPlayer output = new SongPlayer();
 			output.playChord(song, 0);
